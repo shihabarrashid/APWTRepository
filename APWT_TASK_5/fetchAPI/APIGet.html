@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Get Tutor List</title>
+</head>
+<body onload="loadDoc()">
+<h2>Get Tutor API</h2>
+<ul>
+  <li id="tutorId"></li>
+  <li id="tutorName"></li>
+  <li id="tutorEmail"></li>
+</ul>
+
+<script>
+function loadDoc() {
+  const xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+    	var obj_arr = JSON.parse( this.responseText);
+      console.log(obj_arr);
+      document.getElementById("tutorId").innerHTML =obj_arr[0].id;
+      document.getElementById("tutorName").innerHTML =obj_arr[0].name;
+      document.getElementById("tutorEmail").innerHTML =obj_arr[0].email;
+    }
+  };
+  xhttp.open("GET", "http://127.0.0.1:8000/api/tutors");
+  xhttp.send();
+}
+</script>
+</body>
+</html>
