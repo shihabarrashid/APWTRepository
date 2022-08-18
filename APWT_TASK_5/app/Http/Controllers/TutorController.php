@@ -9,16 +9,40 @@ class TutorController extends Controller
 {
     public function index()
     {
-        return Tutor::all();
+        return response() -> json(Tutor::latest()->get());
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required'
+        Tutor::create([
+            'name' => $request -> name,
+            'email' => $request -> email,
+            'password' => bcrypt ($request -> password)
         ]);
-        return Tutor::create($request->all());
+
+        return response () -> json('Successfully Created');
+    }
+
+    public function edit($id)
+    {
+        return response() -> json(Tutor::whereId($id)->first());
+    }
+
+    public function update(Request $request, $id)
+    {
+        $tutor = Tutor::whereId($id) -> first();
+
+        $tutor -> update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        return response()->json('Success');
+    }
+
+    public function destroy($id)
+    {
+        Tutor::whereId($id) -> first()->delete();
+        return response()->json('Deleted');
     }
 }
